@@ -1,20 +1,27 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
+  const User = sequelize.define("user", {
     name: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
       unique: true
     },
     password: DataTypes.STRING,
-    about: DataTypes.TEXT
+    about: DataTypes.TEXT,
   }, {
     timestamps: false,
+    underscored: true
   })
   User.associate = models => {
-    User.hasMany(models.Post, {
-      as: "Posts",
-      foreignKey: "user_id"
+    User.hasMany(models.Event, {
+      as: "Events",
+      foreignKey: "user_id",
+      foreignKeyConstraint: false 
+    })
+    User.hasOne(models.UserActivation, {
+      as: "Code",
+      foreignKey: "user_id",
+      foreignKeyConstraint: false 
     })
   }
   return User;
