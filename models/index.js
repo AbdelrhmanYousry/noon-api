@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const {DATABASE, USER, PASSWORD} = process.env;
-const sequelize = new Sequelize(DATABASE, USER, PASSWORD, {
+const sequelize = new Sequelize(`postgres://${USER}:${PASSWORD}@ec2-54-221-214-3.compute-1.amazonaws.com:5432/${DATABASE}`, {
   dialect: "postgres"
 });
 
