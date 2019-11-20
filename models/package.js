@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       hours: DataTypes.INTEGER,
       price: DataTypes.INTEGER,
+      available: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      }
     }, {
       timestamps: false,
       underscored: true

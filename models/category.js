@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true
       },
-      pph: DataTypes.FLOAT
+      available: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      }
     }, {
       timestamps: false,
       underscored: true

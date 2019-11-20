@@ -143,9 +143,10 @@ module.exports.makeEvent = async (req, res) => {
     const photographers = await category.getPhotographers({
       where: {
         location_id: locationId,
-        order: [['work_done','DESC']],
-        limit: 5
-      }
+        active: true
+      },
+      order: [['work_done','DESC']],
+      limit: 5,
     });
     
     

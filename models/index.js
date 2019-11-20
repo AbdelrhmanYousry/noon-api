@@ -1,8 +1,10 @@
 const Sequelize = require("sequelize");
-const {DATABASE, USER, PASSWORD} = process.env;
-const sequelize = new Sequelize(`postgres://${USER}:${PASSWORD}@ec2-54-221-214-3.compute-1.amazonaws.com:5432/${DATABASE}`, {
+const {DATABASE, DB_USER,DB_PASSWORD, NODE_ENV} = process.env;
+const sequelize = NODE_ENV === "development" ? new Sequelize(DATABASE, DB_USER, DB_PASSWORD, {
   dialect: "postgres"
-});
+}) : new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@ec2-54-221-214-3.compute-1.amazonaws.com:5432/${DATABASE}`, {
+  dialect: "postgres"
+}) ;
 
 
 const models = {
