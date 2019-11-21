@@ -102,19 +102,19 @@ module.exports.logIn = (req, res) => {
 };
 
 module.exports.makeEvent = async (req, res) => {
-  const {typeId, startDate, endDate, locationId, address, packageId } = req.body
+  const {typeId, date, locationId, address, packageId } = req.body
   if (!typeId) {
     return res.status(400).json({
       message: "no type"
     })
   }
-  if (!startDate) {
+  if (!date) {
     return res.status(400).json({
       message: "no start"
     })
   }
  
-  if (!locationId) {
+  if (!locationId) { 
     return res.status(400).json({
       message: "no location"
     })
@@ -156,7 +156,8 @@ module.exports.makeEvent = async (req, res) => {
       package_id: packageId,
       location_id: locationId,
       user_id: req.user.id,
-      address
+      address,
+      date
     });
     const assignPhotographers = await createdEvent.setPotentialPhotographers(photographers)
     res.status(200).json({
