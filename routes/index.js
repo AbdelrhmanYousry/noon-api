@@ -10,8 +10,8 @@ router.post("/login", userCtrl.logIn)
 router.post("/shootr/signup", shootrCtrl.signUp)
 router.post("/shootr/login", shootrCtrl.logIn)
 
-router.post("/make-order", passport.authenticate("jwt", { session: false}), userCtrl.makeEvent)
-router.get("/events", passport.authenticate("jwt", { session: false}), userCtrl.getEvents)
+router.post("/make-order", passport.authenticate("jwt-user", { session: false}), userCtrl.makeEvent)
+router.get("/events", passport.authenticate("jwt-user", { session: false}), userCtrl.getEvents)
 
 // admin apis
 router.post("/create-category", categoryCtrl.createCategory);

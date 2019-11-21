@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { User, Category, sequelize, Event, Sequelize } = require("../models");
+const { User, Category, sequelize, Event, Sequelize, Package } = require("../models");
 const { Op } = Sequelize;
 const jwt = require("jsonwebtoken");
 const { SECRET } = process.env;
@@ -176,12 +176,10 @@ module.exports.makeEvent = async (req, res) => {
 }
 
 module.exports.getEvents = (req, res) => {
-  // Order.findAll({
-  //   where: {
-  //     user_id:  req.user.id
-  //   }
-  // }).
-  req.user.getEvents().  
+  req.user.getEvents({
+    attributes: ['address', 'assigned'],
+    includes: [{model: Package}]
+  }).  
   then(events => {
     if(events.length < 1) {
       return res.status(200).json({
