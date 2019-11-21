@@ -1,14 +1,13 @@
 const { Package } = require("../models");
 module.exports.createPackage = (req, res) => {
-    Package.create({
-        name: req.body.name,
-        hours:req.body.hours,
-        price: req.body.price,
-        category_id: req.body.categoryId
-    }).then(package => {
+    Package.bulkCreate(req.body.packages.map(pack => ({
+        name: pack.name,
+        hours: pack.hours,
+        price: pack.price,
+        CategoryId: pack.categoryId
+    }))).then(packages => {
         res.status(200).json({
             message: "success",
-            package: package.id
         })
     }).catch(err => {
         res.status(400).json({
@@ -17,7 +16,8 @@ module.exports.createPackage = (req, res) => {
     })
 }
 module.exports.getPackages = async (req, res) => {
-    if (!req.body.categoryId) {
+
+    if (!req.query.categoryId) {
         return res.status(400).json({
             message: "please add categoryId"
           })
@@ -25,9 +25,8 @@ module.exports.getPackages = async (req, res) => {
     
     try {
         const packages = await Package.findAll({
-            attributes: ["id", "name"],
             where: {
-                category_id: req.body.categoryId
+                CategoryId: req.query.categoryId
             }
         })
         res.status(200).json({
