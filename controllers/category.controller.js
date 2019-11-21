@@ -3,7 +3,6 @@ module.exports.createCategory = async function(req, res) {
     try {
         const creatingCategory = await Category.create({
             name: req.body.name,
-            pph: req.body.pph
         })
 
         res.status(200).json({
