@@ -15,6 +15,7 @@ router.get("/events", passport.authenticate("jwt-user", { session: false}), user
 
 // admin apis
 router.post("/create-category", categoryCtrl.createCategory);
+router.post("/create-package", packageCtrl.createPackage);
 router.get("/categories", categoryCtrl.getCategories);
 router.get("/packages", packageCtrl.getPackages);
 module.exports = router;
