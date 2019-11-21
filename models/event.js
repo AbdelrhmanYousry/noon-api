@@ -9,16 +9,16 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     status: {
       type: DataTypes.ENUM,
-      defaultValue: "pending",
-      values: ["pending","success"]
+      defaultValue: "payment",
+      values: ["payment","assigning", "progress", "editing", "done"]
     },
-    assigned: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    date: {
+      type: DataTypes.DATE
     },
-    published: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    
+    rate: {
+      type: DataTypes.ENUM,
+      values: [1,2,3,4,5]
     }
   }, {
     timestamps: false,

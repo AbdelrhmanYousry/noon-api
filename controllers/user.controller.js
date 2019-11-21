@@ -113,11 +113,7 @@ module.exports.makeEvent = async (req, res) => {
       message: "no start"
     })
   }
-  if (!endDate) {
-    return res.status(400).json({
-      message: "no end"
-    })
-  }
+ 
   if (!locationId) {
     return res.status(400).json({
       message: "no location"
