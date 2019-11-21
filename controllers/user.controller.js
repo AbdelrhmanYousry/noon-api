@@ -173,7 +173,6 @@ module.exports.makeEvent = async (req, res) => {
 
 module.exports.getEvents = (req, res) => {
   req.user.getEvents({
-    attributes: ['address', 'assigned'],
     includes: [{model: Package}]
   }).  
   then(events => {
