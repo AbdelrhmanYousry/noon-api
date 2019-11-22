@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     });
     Location.hasMany(models.Photographer, {
       as: "Photographers",
-      foreignKey: "location_id"
+      foreignKey: "location_id",
+      foreignKeyConstraint: false
+
     });
   };
   return Location;

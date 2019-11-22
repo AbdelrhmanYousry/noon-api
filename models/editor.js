@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     Editor.associate = models => {
       Editor.hasMany(models.Event, {
         as: "Events",
+        foreignKey: "editor_id",
         foreignKeyConstraint: false 
       })
 

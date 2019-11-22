@@ -18,11 +18,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "user_id",
       foreignKeyConstraint: false 
     })
-    User.hasOne(models.UserActivation, {
-      as: "Code",
-      foreignKey: "user_id",
-      foreignKeyConstraint: false 
-    })
   }
   return User;
 }

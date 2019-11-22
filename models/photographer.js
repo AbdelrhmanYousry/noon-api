@@ -27,15 +27,28 @@ module.exports = (sequelize, DataTypes) => {
     })
     Photographer.belongsTo(models.Location, {
       as: "City",
-      foreignKey: "location_id",      
+      foreignKey: "location_id",     
+      foreignKeyConstraint: false 
+
     })
     Photographer.belongsToMany(models.Category, {
       as: "Categories",
+      foreignKey: "photographer_id",
+
       through: "category_photographer_relationship",
+      foreignKeyConstraint: false 
+
+      
     })
     Photographer.belongsToMany(models.Event, {
       as: "UpcomingEvents",
       through: "events_potential_photographers",
+      foreignKey: "photographer_id",
+      foreignKeyConstraint: false 
+    })
+    Photographer.hasOne(models.PhotographerActivation, {
+      as: "Code",
+      foreignKey: "photographer_id",
       foreignKeyConstraint: false 
     })
   }

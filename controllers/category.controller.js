@@ -15,8 +15,35 @@ module.exports.createCategory = async function(req, res) {
             message: "error"
         })
     }
-    
-    
+//     Abbassia
+// Ain Shams
+// Azbakeya
+// Bulaq
+// Daher
+// Al-Darb al-Ahmar
+//El Marg
+//Helwan
+// 15th of May
+// Mokattam
+// Manshiyat Naser
+// Nasr City
+// El Qobbah
+// El Manial
+// El Sakkakini
+// Shubra
+// El Sahel
+// Rod El Farag
+// Zeitoun 
+	
+// Garden City Heliopolis Maadi Zamalek
+    	
+// Badr Madinaty New Cairo El Rehab New Heliopolis El Shorouk
+    	
+// Agouza Mit Okba Imbaba
+
+// DokkiMohandessin
+// Shubra El Kheima
+// Obour
 }
 
 module.exports.getCategories = async function(req, res) {

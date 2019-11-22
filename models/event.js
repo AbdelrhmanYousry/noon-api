@@ -35,16 +35,23 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "photographer_id",
       foreignKeyConstraint: false 
     });
+    
     Event.belongsTo(models.Package, {
-      foreignKeyConstraint: false
+      foreignKeyConstraint: false,
+      foreignKey: "package_id",
+
     });
     Event.belongsTo(models.Location, {
       foreignKeyConstraint: false,
       foreignKey: "location_id",
     });
-    Event.hasMany(models.Media)
+    Event.hasMany(models.Media, {
+      foreignKey: "event_id",
+      foreignKeyConstraint: false,
+    })
     Event.belongsToMany(models.Photographer, {
       as: "PotentialPhotographers",
+      foreignKey: "event_id",
       through: "events_potential_photographers",
       foreignKeyConstraint: false 
 

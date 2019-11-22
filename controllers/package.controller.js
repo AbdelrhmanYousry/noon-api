@@ -4,7 +4,7 @@ module.exports.createPackage = (req, res) => {
         name: pack.name,
         hours: pack.hours,
         price: pack.price,
-        CategoryId: pack.categoryId
+        category_id: pack.categoryId
     }))).then(packages => {
         res.status(200).json({
             message: "success",
@@ -26,7 +26,7 @@ module.exports.getPackages = async (req, res) => {
     try {
         const packages = await Package.findAll({
             where: {
-                CategoryId: req.query.categoryId
+                category_id: req.query.categoryId
             }
         })
         res.status(200).json({

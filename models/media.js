@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true
     })
     Media.associate = models => {
-        Media.belongsTo(models.Event)
+        Media.belongsTo(models.Event, {
+            foreignKey: "event_id",
+            foreignKeyConstraint: false,
+        })
     }
     return Media
 }

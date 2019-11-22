@@ -1,5 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
-    const Category = sequelize.define("Category", {
+  const Category = sequelize.define(
+    "Category",
+    {
       name: {
         type: DataTypes.STRING,
         unique: true
@@ -8,20 +10,23 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       }
-    }, {
+    },
+    {
       timestamps: false,
       underscored: true
-    });
-    Category.associate = models => {
-      
-      Category.belongsToMany(models.Photographer, {
-        as: "Photographers",
-        through: "category_photographer_relationship",
-        timestamps: false
-      })
-      Category.hasMany(models.Package, {
-        foreignKeyConstraint: false 
-      })
     }
-    return Category;
+  );
+  Category.associate = models => {
+    Category.belongsToMany(models.Photographer, {
+      as: "Photographers",
+      through: "category_photographer_relationship",
+      foreignKey: "category_id",
+      timestamps: false
+    });
+    Category.hasMany(models.Package, {
+      foreignKey: "category_id",
+      foreignKeyConstraint: false
+    });
   };
+  return Category;
+};
