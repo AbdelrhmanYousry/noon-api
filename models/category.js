@@ -9,7 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       available: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
-      }
+      },
+      eventType: {
+        type: DataTypes.ENUM,
+        defaultValue: "both",
+        values: ["personal","business", "both"]
+      },
     },
     {
       timestamps: false,
@@ -21,9 +26,12 @@ module.exports = (sequelize, DataTypes) => {
       as: "Photographers",
       through: "category_photographer_relationship",
       foreignKey: "category_id",
+      foreignKeyConstraint: false,
       timestamps: false
     });
-    Category.hasMany(models.Package, {
+    Category.belongsToMany(models.Package, {
+      through: models.CategoriesPackages,
+      as: "Packages",
       foreignKey: "category_id",
       foreignKeyConstraint: false
     });

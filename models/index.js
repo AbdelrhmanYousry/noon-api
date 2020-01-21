@@ -16,7 +16,9 @@ const models = {
   Media: sequelize.import("./media"),
   Package: sequelize.import("./package"),
   Editor: sequelize.import("./editor"),
-  PhotographerActivation: sequelize.import("./photographer_activation")
+  CategoriesPackages: sequelize.import("./categories_packages"),
+  PhotographerActivation: sequelize.import("./photographer_activation"),
+  EventsPotentialPhotographers: sequelize.import("./events_potential_photographers")
 }
 
 

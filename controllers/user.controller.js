@@ -1,5 +1,13 @@
 const bcrypt = require("bcrypt");
-const { User, Category, sequelize, Event, Sequelize, Package } = require("../models");
+const {
+  User,
+  Category,
+  sequelize,
+  Event,
+  Sequelize,
+  Package,
+  Location
+} = require("../models");
 const { Op } = Sequelize;
 const jwt = require("jsonwebtoken");
 const { SECRET } = process.env;
@@ -61,75 +69,73 @@ module.exports.logIn = (req, res) => {
     where: {
       email: req.body.email
     }
-  }).then(user => {
-    if (!user) {
-      return res.status(400).json({
-        msg: "No user with this email"
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({
+          msg: "No user with this email"
+        });
+      }
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (err) {
+          return res.status(400).json({
+            msg: "Error"
+          });
+        }
+        if (result) {
+          const token = jwt.sign(
+            {
+              id: user.id,
+              name: user.name,
+              email: user.email
+            },
+            SECRET
+          );
+          return res.status(200).json({
+            msg: "logged in successfully",
+            access_token: "Bearer " + token,
+            name: user.name
+          });
+        } else {
+          return res.status(400).json({
+            msg: "password is incorrect"
+          });
+        }
       });
-    }
-    bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if (err) {
-        return res.status(400).json({
-          msg: "Error"
-        });
-      }
-      if (result) {
-        const token = jwt.sign(
-          {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          },
-          SECRET
-        );
-        return res.status(200).json({
-          msg: "logged in successfully",
-          access_token: "Bearer " + token,
-          name: user.name
-        });
-      } else {
-        return res.status(400).json({
-          msg: "password is incorrect"
-        });
-      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
+        msg: "Error"
+      });
     });
-  }).catch(err => {
-    console.log(err);
-    res.status(400).json({
-      msg: "Error"
-    });
-  });
 };
 
 module.exports.makeEvent = async (req, res) => {
-  const {typeId, date, locationId, address, packageId } = req.body
-  if (!typeId) {
-    return res.status(400).json({
-      message: "no type"
-    })
-  }
+  const { date, locationId, address, packageId } = req.body;
+  
   if (!date) {
     return res.status(400).json({
       message: "no start"
-    })
+    });
   }
- 
-  if (!locationId) { 
+
+  if (!locationId) {
     return res.status(400).json({
       message: "no location"
-    })
+    });
   }
   if (!address) {
     return res.status(400).json({
       message: "no address"
-    })
+    });
   }
   if (!packageId) {
     return res.status(400).json({
-      message: "no address"
-    })
+      message: "no package"
+    });
   }
-   
+
   try {
     const category = await Category.findOne({
       where: {
@@ -141,57 +147,103 @@ module.exports.makeEvent = async (req, res) => {
         location_id: locationId,
         active: true
       },
-      order: [['work_done','DESC']],
-      limit: 5,
+      order: [["work_done", "ASC"]],
+      limit: 5
     });
-    
-    
-    
+
     if (photographers.length < 1) {
       return res.status(400).json({
         message: "no shootrzz available for this type yet and your time"
-      })
+      });
     }
     const createdEvent = await Event.create({
-      package_id: packageId,
+      category_package_id: packageId,
       location_id: locationId,
       user_id: req.user.id,
       address,
       date
     });
-    const assignPhotographers = await createdEvent.setPotentialPhotographers(photographers)
+    const assignPhotographers = await createdEvent.setPotentialPhotographers(
+      photographers
+    );
     res.status(200).json({
       message: "success"
-    })
-  } catch(err) {
-    console.log(err)
+    });
+  } catch (err) {
+    console.log(err);
 
     res.status(400).json({
       message: "error"
-    })
+    });
   }
-}
+};
 
 module.exports.getEvents = (req, res) => {
-  req.user.getEvents({
-    includes: [{model: Package}]
-  }).  
-  then(events => {
-    if(events.length < 1) {
-      return res.status(200).json({
-        events: [],
-        message: "you don't have Events yet"
-      })
-    }
-    res.status(200).json({
-      events,
-      message: "success"
-    })
-  }).catch(err => {
-    console.log(err)
-    res.status(400).json({
-      message: "error"
-    })
-
+  Event.findAll({
+    where: {
+      user_id: req.user.id
+    },
+    include: [{ association: "Location" }]
   })
-}
+    .then(events => {
+      if (events.length < 1) {
+        return res.status(200).json({
+          events: [],
+          message: "you don't have Events yet"
+        });
+      }
+     
+      res.status(200).json({
+        events: events.map(event => ({
+          id: event.id,
+          address: event.address,
+          status: event.status,
+          date: event.date,
+          location: event.Location
+        })),
+        message: "success"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
+        message: "error"
+      });
+    });
+};
+
+module.exports.getEvent = (req, res) => {
+  Event.findOne({
+    where: {
+      id: req.params.eventId
+    },
+    include: [{ association: "Location" }, { association: "EventItems"}]
+  })
+    .then(event => {
+      if (!event) {
+        return res.status(200).json({
+          event: null,
+          message: "you don't have Events yet"
+        });
+      }
+      
+      res.status(200).json({
+        event :{ 
+          address: event.address,
+          status: event.status,
+          date: event.date,
+          location: event.Location,
+          id: event.id,
+          items: event.EventItems.length > 0 ? (event.eventItem.map(item => ({src: item.edited}))): []
+        
+        },
+        message: "success"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
+        message: "error"
+      });
+    });
+};

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING,
     about: DataTypes.TEXT,
+    profileUrl: DataTypes.STRING,
   }, {
     timestamps: false,
     underscored: true

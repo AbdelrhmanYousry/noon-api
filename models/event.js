@@ -15,11 +15,15 @@ module.exports = (sequelize, DataTypes) => {
     date: {
       type: DataTypes.DATE
     },
+    assigned: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     rate: {
       type: DataTypes.ENUM,
-
       values: ["1","2","3","4","5"]
-    }
+    },
+    
   }, {
     timestamps: false,
     underscored: true
@@ -36,16 +40,19 @@ module.exports = (sequelize, DataTypes) => {
       foreignKeyConstraint: false 
     });
     
-    Event.belongsTo(models.Package, {
+    Event.belongsTo(models.CategoriesPackages, {
+      as: "Package",
       foreignKeyConstraint: false,
-      foreignKey: "package_id",
+      foreignKey: "category_package_id",
 
     });
     Event.belongsTo(models.Location, {
       foreignKeyConstraint: false,
+      as: "Location",
       foreignKey: "location_id",
     });
     Event.hasMany(models.Media, {
+      as: "EventItems",
       foreignKey: "event_id",
       foreignKeyConstraint: false,
     })

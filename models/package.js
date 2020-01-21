@@ -15,16 +15,12 @@ module.exports = (sequelize, DataTypes) => {
 
     });
     Package.associate = models => {
-      Package.belongsTo(models.Category, {
-        foreignKey: "category_id",
-        foreignKeyConstraint: false 
-
-      })
-      Package.hasMany(models.Event, {
-        as: "Events",
+      Package.belongsToMany(models.Category, {
+        through: models.CategoriesPackages,
+        as: "Categories",
         foreignKey: "package_id",
-
         foreignKeyConstraint: false 
+
       })
     }
     return Package;
