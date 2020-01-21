@@ -20,7 +20,7 @@ require("./config/passport")(passport);
 
 app.use("/api", routes)
 
-sequelize.sync({force: true}).then(() => {
+sequelize.sync({force: false}).then(() => {
   console.log("connected to db..")
   app.listen(PORT, () => {
     console.log("server is running on port:", PORT)
