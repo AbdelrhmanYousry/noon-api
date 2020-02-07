@@ -90,17 +90,8 @@ module.exports.signUp = async (req, res) => {
     const assigningCategoriesToPhotographer = await createdPhotographer.setCategories(
       subscribedCategories
     );
-    const token = jwt.sign(
-      {
-        id: createdPhotographer.id,
-        name: createdPhotographer.name,
-        email: createdPhotographer.email
-      },
-      SECRET
-    );
     res.status(200).json({
       msg: "Photographer signed up successfully",
-      access_token: "Bearer " + token,
       photographerName: createdPhotographer.name
     });
   } catch (error) {

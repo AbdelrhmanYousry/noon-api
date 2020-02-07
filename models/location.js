@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "location",
     {
       name: DataTypes.STRING,
-      availabe: {
+      available: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       }
