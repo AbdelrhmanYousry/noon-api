@@ -59,7 +59,7 @@ module.exports.getCategories = async function(req, res) {
             categories: categories.map(category => ({
                 id: category.id,
                 name: category.name,
-                event_type: categories.event_type,
+                event_type: category.event_type,
                 packages: category.Packages && category.Packages.map(pack => ({ 
                     id: pack.categories_packages.id,
                     hours: pack.hours,
