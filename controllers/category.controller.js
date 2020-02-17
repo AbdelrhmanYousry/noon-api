@@ -50,7 +50,6 @@ module.exports.createCategory = async function(req, res) {
 module.exports.getCategories = async function(req, res) {
     try {
         const categories = await Category.findAll({
-            attributes: ["id", "name", "event_type"],
             include: [{ association:  "Packages", attributes: ['id', 'name', 'hours', 'price'], where: { available: true}}],
             order: [['id'],["Packages", 'price', 'ASC']]
         })
@@ -59,7 +58,7 @@ module.exports.getCategories = async function(req, res) {
             categories: categories.map(category => ({
                 id: category.id,
                 name: category.name,
-                event_type: category.event_type,
+                event_type: category.eventType,
                 packages: category.Packages && category.Packages.map(pack => ({ 
                     id: pack.categories_packages.id,
                     hours: pack.hours,

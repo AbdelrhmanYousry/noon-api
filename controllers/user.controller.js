@@ -167,7 +167,8 @@ module.exports.makeEvent = async (req, res) => {
       photographers
     );
     res.status(200).json({
-      message: "success"
+      message: "success",
+      eventId: createdEvent.id
     });
   } catch (err) {
     console.log(err);
