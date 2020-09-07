@@ -8,10 +8,9 @@ const {
   Package,
   Location
 } = require("../models");
-const { Op } = Sequelize;
 const jwt = require("jsonwebtoken");
 const { SECRET } = process.env;
-console.log(SECRET);
+
 module.exports.signUp = (req, res) => {
   if (!req.body.name) {
     return res.status(400).json({

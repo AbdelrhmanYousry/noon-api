@@ -1,7 +1,7 @@
 const { ExtractJwt } = require("passport-jwt");
 const JwtStrategy = require("passport-jwt").Strategy;
 const opts = {}
-const { User, Photographer, Editor } = require("../models")
+const { User, Photographer, Admin } = require("../models")
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.SECRET;
 module.exports = passport => {
@@ -29,6 +29,20 @@ module.exports = passport => {
     }).then(photographer => {
       if (photographer) {
         return done(null, photographer)
+      }
+      return done(null, false)
+    }).catch(err =>{
+      console.log(err)
+    })
+  }))
+  passport.use('jwt-admin', new JwtStrategy(opts, (jwt_payload, done) => {
+    Admin.findOne({
+      where: {
+        id: jwt_payload.id
+      }
+    }).then(admin => {
+      if (admin) {
+        return done(null, admin)
       }
       return done(null, false)
     }).catch(err =>{

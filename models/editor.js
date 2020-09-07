@@ -15,10 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       Editor.hasMany(models.Event, {
         as: "Events",
         foreignKey: "editor_id",
-        foreignKeyConstraint: false 
+        foreignKeyConstraint: false
       })
 
     }
-    
     return Editor;
   };

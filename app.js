@@ -20,11 +20,16 @@ require("./config/passport")(passport);
 
 app.use("/api", routes)
 
-sequelize.sync({force: false}).then(() => {
-  console.log("connected to db..")
-  app.listen(PORT, () => {
-    console.log("server is running on port:", PORT)
-  })
-}).catch(err => {
-  console.log(err)
-})
+
+const startApp = async () => {
+  try {
+    await sequelize.sync({ force: false });
+    app.listen(PORT, () => {
+      console.log("server is running on port:", PORT)
+    })
+  } catch (error) {
+    console.log("error ",error)
+  }
+};
+startApp();
+

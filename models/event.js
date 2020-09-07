@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ["1","2","3","4","5"]
     },
-    
   }, {
     timestamps: false,
     underscored: true
@@ -32,14 +31,13 @@ module.exports = (sequelize, DataTypes) => {
     Event.belongsTo(models.User, {
       as: "Owner",
       foreignKey: "user_id",
-      foreignKeyConstraint: false 
+      foreignKeyConstraint: false
     });
     Event.belongsTo(models.Photographer, {
       as: "Photographer",
       foreignKey: "photographer_id",
-      foreignKeyConstraint: false 
+      foreignKeyConstraint: false
     });
-    
     Event.belongsTo(models.CategoriesPackages, {
       as: "Package",
       foreignKeyConstraint: false,
@@ -60,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       as: "PotentialPhotographers",
       foreignKey: "event_id",
       through: "events_potential_photographers",
-      foreignKeyConstraint: false 
+      foreignKeyConstraint: false
 
     })
   };
