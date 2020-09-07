@@ -109,7 +109,8 @@ module.exports.logIn = (req, res) => {
 module.exports.getEvents = (req, res) => {
   Event.findAll({
     include: [{ association: "Location" }, { association: "Owner" }],
-    order: ['id', 'DESC']
+    attributes: ['id', 'date', 'address', 'status'],
+    order: [['id', 'DESC']]
   })
     .then(events => {
       if (events.length < 1) {
@@ -133,7 +134,8 @@ module.exports.getEvents = (req, res) => {
     .catch(err => {
       console.log(err);
       res.status(400).json({
-        message: "error"
+        message: "error",
+        error: JSON.stringify(err, null, 2)
       });
     });
 };

@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       values: ["1","2","3","4","5"]
     },
   }, {
-    timestamps: true,
+    timestamps: false,
     underscored: true
   });
   Event.associate = models => {
