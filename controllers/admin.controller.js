@@ -110,7 +110,7 @@ module.exports.getEvents = (req, res) => {
   Event.findAll({
     include: [{ association: "Location" }, { association: "Owner" }],
     attributes: ['id', 'date', 'address', 'status'],
-    order: [['id', 'DESC']]
+    order: [['date', 'DESC']]
   })
     .then(events => {
       if (events.length < 1) {
@@ -139,39 +139,3 @@ module.exports.getEvents = (req, res) => {
       });
     });
 };
-
-// module.exports.getEvent = (req, res) => {
-//   Event.findOne({
-//     where: {
-//       id: req.params.eventId
-//     },
-//     include: [{ association: "Location" }, { association: "EventItems"}]
-//   })
-//     .then(event => {
-//       if (!event) {
-//         return res.status(200).json({
-//           event: null,
-//           message: "you don't have Events yet"
-//         });
-//       }
-      
-//       res.status(200).json({
-//         event :{ 
-//           address: event.address,
-//           status: event.status,
-//           date: event.date,
-//           location: event.Location,
-//           id: event.id,
-//           items: event.EventItems.length > 0 ? (event.eventItem.map(item => ({src: item.edited}))): []
-        
-//         },
-//         message: "success"
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.status(400).json({
-//         message: "error"
-//       });
-//     });
-// };
