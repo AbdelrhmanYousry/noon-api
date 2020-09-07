@@ -108,7 +108,8 @@ module.exports.logIn = (req, res) => {
 
 module.exports.getEvents = (req, res) => {
   Event.findAll({
-    include: [{ association: "Location" }, { association: "Owner" }]
+    include: [{ association: "Location" }, { association: "Owner" }],
+    order: ['id', 'DESC']
   })
     .then(events => {
       if (events.length < 1) {
