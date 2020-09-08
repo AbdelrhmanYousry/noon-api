@@ -129,7 +129,7 @@ module.exports.getEvents = (req, res) => {
           date: event.date,
           location: event.Location,
           user: event.Owner,
-          package: event.package,
+          package: event.Package,
           potential_photographers: event.PotentialPhotographers,
           photographer: event.Photographer
         })),
