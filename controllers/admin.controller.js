@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { Admin, Event } = require("../models");
+const { Admin, Event, Category, Package } = require("../models");
 const jwt = require("jsonwebtoken");
 const { SECRET } = process.env;
 
@@ -102,45 +102,59 @@ module.exports.logIn = (req, res) => {
     });
 };
 
-module.exports.getEvents = (req, res) => {
-  Event.findAll({
-    include: [
-      { association: "Location" },
-      { association: "Owner", attributes: ["name", "email"] },
-      { association: "Package", },
-      { association: "PotentialPhotographers" },
-      { association: "Photographer" },
-    ],
-    attributes: ["id", "date", "address", "status"],
-    order: [["date", "DESC"]],
-  })
-    .then((events) => {
-      if (events.length < 1) {
-        return res.status(200).json({
-          events: [],
-          message: "you don't have Events yet",
-        });
-      }
-      res.status(200).json({
-        events: events.map((event) => ({
-          id: event.id,
-          address: event.address,
-          status: event.status,
-          date: event.date,
-          location: event.Location,
-          user: event.Owner,
-          package: event.Package,
-          potential_photographers: event.PotentialPhotographers,
-          photographer: event.Photographer
-        })),
-        message: "success",
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json({
-        message: "error",
-        error: JSON.stringify(err, null, 2),
-      });
+module.exports.getEvents = async (req, res) => {
+  try {
+    const eventsQuery = Event.findAll({
+      include: [
+        { association: "Location" },
+        { association: "Owner", attributes: ["name", "email"] },
+        { association: "Package" },
+        { association: "PotentialPhotographers" },
+        { association: "Photographer" },
+      ],
+      attributes: ["id", "date", "address", "status"],
+      order: [["date", "DESC"]],
     });
+    const categoryQuery = Category.findAll({
+      attributes: ["id", "name", "available"]
+    })
+    const packageQuery = Package.findAll({
+      attributes: ["id", "name", "hours", "price", "available"]
+    })
+    const [events, categories, packages] = await Promise.all([eventsQuery, categoryQuery, packageQuery])
+    if (events.length < 1) {
+      return res.status(200).json({
+        events: [],
+        message: "you don't have Events yet",
+      });
+    }
+    let categoriesSet = {};
+    let packagesSet = {};
+    categories.forEach(el => {
+      categoriesSet[el.id] = el
+    });
+    packages.forEach(el => {
+      packagesSet[el.id] = el
+    });
+    res.status(200).json({
+      events: events.map((event) => ({
+        id: event.id,
+        address: event.address,
+        status: event.status,
+        date: event.date,
+        location: event.Location,
+        user: event.Owner,
+        package: {...packagesSet[event.Package.package_id], category: {...categoriesSet[event.Package.category_id]}},
+        potential_photographers: event.PotentialPhotographers,
+        photographer: event.Photographer,
+      })),
+      message: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "error",
+      error: JSON.stringify(error, null, 2),
+    });
+  }
 };
