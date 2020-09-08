@@ -145,6 +145,7 @@ module.exports.getEvents = async (req, res) => {
         location: event.Location,
         user: event.Owner,
         // package: {...packagesSet[event.Package.package_id], category: {...categoriesSet[event.Package.category_id]}},
+        package: event.Package,
         potential_photographers: event.PotentialPhotographers,
         photographer: event.Photographer,
       })),
