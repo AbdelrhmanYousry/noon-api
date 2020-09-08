@@ -144,17 +144,19 @@ module.exports.getEvents = async (req, res) => {
         date: event.date,
         location: event.Location,
         user: event.Owner,
-        package: {...packagesSet[event.Package.package_id], category: {...categoriesSet[event.Package.category_id]}},
+        // package: {...packagesSet[event.Package.package_id], category: {...categoriesSet[event.Package.category_id]}},
         potential_photographers: event.PotentialPhotographers,
         photographer: event.Photographer,
       })),
+      categories,
+      packages,
       message: "success",
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({
       message: "error",
-      error: JSON.stringify(error, null, 2),
+      error: error
     });
   }
 };
