@@ -51,7 +51,10 @@ module.exports.getCategories = async function(req, res) {
     try {
         const categories = await Category.findAll({
             include: [{ association:  "Packages", attributes: ['id', 'name', 'hours', 'price'], where: { available: true}}],
-            order: [['id'],["Packages", 'price', 'ASC']]
+            order: [['id'],["Packages", 'price', 'ASC']],
+            where: {
+                available: true
+            }
         })
         res.status(200).json({
             message: "success",
