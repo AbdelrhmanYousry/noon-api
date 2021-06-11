@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 require("dotenv").config();
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 const routes = require("./routes");
 const { sequelize } =  require("./models");
 
@@ -14,9 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }))
-
-app.use(passport.initialize());
-require("./config/passport")(passport);
 
 app.use("/api", routes)
 

@@ -3,27 +3,17 @@ const {
   DATABASE,
   DB_USER,DB_PASSWORD,
   NODE_ENV,
+  DATABASE_URL
 } = process.env;
 const sequelize = NODE_ENV === "development" ? new Sequelize(DATABASE, DB_USER, DB_PASSWORD, {
   dialect: "postgres"
-}) : new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@ec2-54-221-214-3.compute-1.amazonaws.com:5432/${DATABASE}`, {
+}) : new Sequelize(DATABASE_URL, {
   dialect: "postgres"
 }) ;
 
 
 const models = {
-  User: sequelize.import("./user"),
-  Photographer: sequelize.import("./photographer"),
-  Event: sequelize.import("./event"),
-  Category: sequelize.import("./category"),
-  Location: sequelize.import("./location"),
-  Media: sequelize.import("./media"),
-  Package: sequelize.import("./package"),
-  Editor: sequelize.import("./editor"),
-  CategoriesPackages: sequelize.import("./categories_packages"),
-  PhotographerActivation: sequelize.import("./photographer_activation"),
-  EventsPotentialPhotographers: sequelize.import("./events_potential_photographers"),
-  Admin: sequelize.import("./admin")
+  Post: sequelize.import("./post")
 }
 
 
