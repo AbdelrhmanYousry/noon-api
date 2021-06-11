@@ -22,10 +22,10 @@ module.exports.updatePost = async (req, res) => {
     });
     if (liked === "true") {
       const updateLiked = await post.update({ liked: true });
-      const increment = await post.increment({ 'likes': 1 });
+      const increment = await post.increment({ likes: 1 });
     } else if (liked === "false") {
       const updateLiked = await post.update({ liked: false });
-      const decrement = await post.decrement({ 'likes': 1 });
+      const decrement = await post.decrement({ likes: 1 });
     }
     res.status(200).json({
       message: "success",
@@ -39,7 +39,9 @@ module.exports.updatePost = async (req, res) => {
 };
 
 module.exports.getPosts = (req, res) => {
-  Post.findAll()
+  Post.findAll({
+    order: [["id", "DESC"]],
+  })
     .then((posts) => {
       if (posts.length < 1) {
         return res.status(200).json({
@@ -60,3 +62,80 @@ module.exports.getPosts = (req, res) => {
       });
     });
 };
+
+// module.exports.createPost = (req, res) => {
+//   const {
+//     title,
+//     price,
+//     description,
+//     image_link,
+//     user_photo,
+//     user_name,
+//     likes,
+//     comments,
+//     tags,
+//     liked,
+//   } = req.body;
+
+
+//   if (!title) {
+//     return res.status(400).json({
+//       message: "no no title",
+//     });
+//   }
+//   if (!price) {
+//     return res.status(400).json({
+//       message: "no no price",
+//     });
+//   }
+//   if (!description) {
+//     return res.status(400).json({
+//       message: "no no description",
+//     });
+//   }
+//   if (!likes) {
+//     return res.status(400).json({
+//       message: "no no likes",
+//     });
+//   }
+//   if (!comments) {
+//     return res.status(400).json({
+//       message: "no no comments",
+//     });
+//   }
+//   if (!tags) {
+//     return res.status(400).json({
+//       message: "no no tags",
+//     });
+//   }
+//   if (!liked) {
+//     return res.status(400).json({
+//       message: "no no liked",
+//     });
+//   }
+
+//   Post.create({
+//     title,
+//     price,
+//     description,
+//     image_link,
+//     user_photo,
+//     user_name,
+//     likes,
+//     comments,
+//     tags,
+//     liked,
+//   })
+//     .then((post) => {
+//       res.status(200).json({
+//         post,
+//         message: "success",
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(400).json({
+//         message: "error",
+//       });
+//     });
+// };
