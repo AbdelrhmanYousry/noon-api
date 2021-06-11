@@ -3,11 +3,10 @@ const {
   DATABASE,
   DB_USER,DB_PASSWORD,
   NODE_ENV,
-  DATABASE_URL
 } = process.env;
 const sequelize = NODE_ENV === "development" ? new Sequelize(DATABASE, DB_USER, DB_PASSWORD, {
   dialect: "postgres"
-}) : new Sequelize(DATABASE_URL, {
+}) : new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@ec2-107-21-10-179.compute-1.amazonaws.com/${DATABASE}`, {
   dialect: "postgres"
 }) ;
 
